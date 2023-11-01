@@ -10,6 +10,9 @@ fi
 outputFile="$(grep -i "Output:" "$sourceFile" | cut -d ':' -f2- | tr -d '[:space:]/')"
 
 tempDirectory=$(mktemp -d)
+
+trap delete_dir EXIT HUP INT QUIT PIPE TERM
+
 thisDirectory=$(pwd)
 
 cp "$sourceFile" "$tempDirectory"
@@ -28,8 +31,6 @@ delete_dir(){
 echo "Temporary directory was deleted"
 rm -rf $tempDirectory
 }
-
-trap delete_dir EXIT HUP INT QUIT PIPE TERM
 
 echo "Successful compilation. Output: $outputFile"
 exit 0
