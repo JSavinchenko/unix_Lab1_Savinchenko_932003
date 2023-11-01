@@ -4,6 +4,11 @@ sourceFile=$1
 tempDirectory=$(mktemp -d)
 thisDirectory=$(pwd)
 
+delete_dir(){
+echo "Temporary directory was deleted"
+rm -rf $tempDirectory
+}
+
 trap delete_dir EXIT HUP INT QUIT PIPE TERM
 
 if [ -z "$sourceFile" ]; then
@@ -25,10 +30,6 @@ g++ "$sourceFile" -o "$outputFile"
 mv "$outputFile" "$thisDirectory"
 cd "$thisDirectory"
 
-delete_dir(){
-echo "Temporary directory was deleted"
-rm -rf $tempDirectory
-}
-
 echo "Successful compilation. Output: $outputFile"
+
 exit 0
