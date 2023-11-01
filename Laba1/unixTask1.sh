@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
 sourceFile=$1
+tempDirectory=$(mktemp -d)
+thisDirectory=$(pwd)
+
+trap delete_dir EXIT HUP INT QUIT PIPE TERM
 
 if [ -z "$sourceFile" ]; then
   echo "enter cpp filename"
@@ -8,12 +12,6 @@ if [ -z "$sourceFile" ]; then
 fi
 
 outputFile="$(grep -i "Output:" "$sourceFile" | cut -d ':' -f2- | tr -d '[:space:]/')"
-
-tempDirectory=$(mktemp -d)
-
-trap delete_dir EXIT HUP INT QUIT PIPE TERM
-
-thisDirectory=$(pwd)
 
 cp "$sourceFile" "$tempDirectory"
 cd "$tempDirectory"
