@@ -9,14 +9,14 @@ echo "Temporary directory was deleted"
 rm -rf $tempDirectory
 }
 
-trap delete_dir EXIT HUP INT QUIT PIPE TERM
+trap delete_dir EXIT SIGHUP SIGINT SIGQUIT SIGTERM
 
 if [ -z "$sourceFile" ]; then
   echo "enter cpp filename"
   exit 1
 fi
 
-outputFile="$(grep -i "Output:" "$sourceFile" | cut -d ':' -f2- | tr -d '[:space:]/')"
+outputFile="$(grep -i "Output:" "$sourceFile" | cut -d ':' -f2- | tr -d '[:space:]')"
 
 cp "$sourceFile" "$tempDirectory"
 cd "$tempDirectory"
